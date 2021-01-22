@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserProfile implements Save {
+public class UserProfile {
 
     public static final String DB_NAME = "grocerystoreinfo.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Main\\Desktop\\databases\\"
@@ -119,7 +119,7 @@ public class UserProfile implements Save {
                 '}';
     }
 
-    @Override
+
     public List<String> write() {
         List<String> values = new ArrayList<>();
         values.add(0, this.name);
@@ -129,7 +129,6 @@ public class UserProfile implements Save {
         return null;
     }
 
-    @Override
     public void read(List<String> savedValues) {
         if (savedValues != null && savedValues.size() > 0) {
             this.name = savedValues.get(0);
