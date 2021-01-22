@@ -2,12 +2,17 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class List {
+    //these are for SQL queries
     public static final String DB_NAME = "grocerystoreinfo.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Main\\Desktop\\databases\\"
+    public static final String CONNECTION_STRING = "jdbc:sqlite:/home/dayvihd/IdeaProjects/Aisle-Finder/"
             + DB_NAME;
+    //stores
+    private final ArrayList<String> groceryList = new ArrayList<>();
 
-    private ArrayList<String> groceryList = new ArrayList<>();
-
+    /**
+     * Purpose: This functions similarly to a toString() method, printing
+     * the existing grocery list.
+     */
     public void printGroceryList() {
         System.out.println("You have " + groceryList.size() + " items in your grocery list.");
 
@@ -19,10 +24,21 @@ public class List {
         }
     }
 
+    /**
+     * Purpose: call this method to add an item to the list
+     * @param item, is the item to be added.
+     */
     public void addGroceryItem(String item) {
         groceryList.add(item.toLowerCase());
     }
 
+    /**
+     * Purpose: this method calls the findItem helper method, if
+     * findItem returns index >= 0 then the item is found and
+     * can be modified.
+     * @param currentName, current item name
+     * @param newItem, name they wish to change it to
+     */
     public void modifyGroceryItem(String currentName, String newItem) {
         int position = findItem(currentName);
         if (position >= 0) {
@@ -49,6 +65,13 @@ public class List {
 
     }
 
+    /**
+     * Purpose: This method retrieves the aisle data from the database
+     * and, if the item exists in the database, it adds the aisle number
+     * to their grocery list.
+     *
+     * @param storeSelection, is the store they wish to get aisle # for.
+     */
     public void addAisles(String storeSelection) {
 
         try {
@@ -85,6 +108,12 @@ public class List {
         }
     }
 
+    /**
+     * Purpose: Private helper method that changes the item
+     * name at the given index (position)
+     * @param position, index to modify
+     * @param newName, new name.
+     */
     private void modifyItem(int position, String newName) {
         groceryList.set(position, newName);
 

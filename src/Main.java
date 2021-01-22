@@ -2,6 +2,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+/*
+ * AUTHOR: David Anderson
+ * FILE: Main.java
+ *
+ * PURPOSE: This is the main class for the Aisle Finder program. Aisle Finder allows users to create an account,
+ * log in, create a grocery list, and the program can automatically add aisle numbers to that grocery list.
+ * Users are able to update/remove/add to the list at any time. The program uses grocerystoreinfo.db to
+ * store User login data (including hashed passwords) and data about grocery items and their aisle
+ * numbers in associated stores. Right now there are only a few local stores from Tucson, AZ because
+ * I couldn't determine how best to populate the database with accurate aisle data.
+ *
+ * USAGE:
+ * java Main
+ *
+ *
+ */
+
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -39,7 +56,6 @@ public class Main {
             String user = scanner.nextLine();
             System.out.println("Password: ");
             String pass = scanner.nextLine();
-
             UserProfile.validateLogin(user, pass);
             if (!UserProfile.acceptPW()) {
                 System.out.println("Login failed. Try again.");
@@ -58,8 +74,13 @@ public class Main {
             createListOption();
         }
 
-    }
+   }
 
+    /**
+     * Purpose: This helper method uses an enhanced switch statement
+     * with lambda expressions to call methods appropriate for the user's
+     * choice.
+     */
     private static void createListOption() {
         boolean quit = false;
         int choice;
@@ -68,40 +89,27 @@ public class Main {
             choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
-                case 0:
-                    printListInstructions();
-                    break;
-                case 1:
-                    groceryList.printGroceryList();
-                    break;
-                case 2:
-                    addItems();
-                    break;
-                case 3:
-                    modifyItem();
-                    break;
-                case 4:
-                    removeItem();
-                    break;
-                case 5:
-                    searchForItem();
-                    break;
-                case 6:
-                    selectStoreAddAisles();
-                    break;
-                case 7:
+                case 0 -> printListInstructions();
+                case 1 -> groceryList.printGroceryList();
+                case 2 -> addItems();
+                case 3 -> modifyItem();
+                case 4 -> removeItem();
+                case 5 -> searchForItem();
+                case 6 -> selectStoreAddAisles();
+                case 7 -> {
                     System.out.println("Goodbye!");
                     quit = true;
                     quitApp = true;
-                    break;
-                case 8:
-                    addToDB();
-                    break;
-
+                }
+                case 8 -> addToDB();
             }
         }
     }
 
+    /**
+     * Another private helper method to select the store they'll be shopping at
+     * and add the aisles to that store.
+     */
     private static void selectStoreAddAisles() {
         System.out.println("Please select a store from the list:");
         String[] storeList = {"Fry's (1st Ave/Grant Rd)",
@@ -111,22 +119,17 @@ public class Main {
         }
         int choice = Integer.parseInt(scanner.nextLine());
         switch (choice) {
-            case 1:
-                System.out.println("Aisles for " + storeList[choice -1] + ": ");
+            case 1 -> {
+                System.out.println("Aisles for " + storeList[choice - 1] + ": ");
                 groceryList.addAisles("F01");
-                break;
-            case 2:
-                groceryList.addAisles("S01");
-                break;
-            case 3:
-                groceryList.addAisles("S02");
-                break;
-            default:
-                System.out.println("Oops! Couldn't find that store. Try again.");
-                break;
+            }
+            case 2 -> groceryList.addAisles("S01");
+            case 3 -> groceryList.addAisles("S02");
+            default -> System.out.println("Oops! Couldn't find that store. Try again.");
         }
     }
-
+    //this method is hidden from users but allows the developer
+    //to add items to the database
     private static void addToDB() {
         System.out.println("Store ID: ");
         String storeID = scanner.nextLine();
@@ -146,7 +149,7 @@ public class Main {
         }
     }
 
-
+    //another helper method to print the grocery list instructions
     private static void printListInstructions() {
 
         System.out.println("Let's create a shopping list! Press ");
@@ -159,7 +162,7 @@ public class Main {
         System.out.println("\t 6 - To select your store & add aisle numbers to the list.");
         System.out.println("\t 7 - To quit the application.");
     }
-
+    //allows users to add an item to the grocery list
     private static void addItems() {
         System.out.print("Please enter a grocery item: (Type Q if done adding)\n");
         String item = scanner.nextLine();
@@ -172,7 +175,7 @@ public class Main {
         }
 
     }
-
+    //this let's user find an existing item in the list and update its name
     private static void modifyItem() {
         System.out.println("Enter the item's name you wish to update: ");
         String name = scanner.nextLine().toLowerCase();
@@ -181,7 +184,7 @@ public class Main {
         groceryList.modifyGroceryItem(name, newItem);
         System.out.println("Item updated!");
     }
-
+    //searches the grocery list and removes the selected item
     private static void removeItem() {
         System.out.println("Enter the item's name you wish to remove: ");
         String name = scanner.nextLine().toLowerCase();
@@ -195,7 +198,7 @@ public class Main {
         }
 
     }
-
+    //this allows users to check and see if they have already added an item
     private static void searchForItem() {
         System.out.println("Enter the name of the item you want to find: ");
         String name = scanner.nextLine().toLowerCase();
