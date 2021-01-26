@@ -5,7 +5,7 @@ import java.util.List;
 public class UserProfile {
 
     public static final String DB_NAME = "grocerystoreinfo.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Main\\Desktop\\databases\\"
+    public static final String CONNECTION_STRING = "jdbc:sqlite:\\home\\dayvihd\\IdeaProjects\\Aisle-Finder\\"
             + DB_NAME;
     private static boolean acceptPW;
 
