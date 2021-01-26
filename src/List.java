@@ -25,8 +25,12 @@ import java.util.ArrayList;
 public class List {
     //these are for SQL queries
     public static final String DB_NAME = "grocerystoreinfo.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:\\home\\dayvihd\\IdeaProjects\\Aisle-Finder\\"
-            + DB_NAME;
+    //Linux machine path
+//    public static final String CONNECTION_STRING = "jdbc:sqlite:\\home\\dayvihd\\IdeaProjects\\Aisle-Finder\\"
+//            + DB_NAME;
+    //Mac path
+    public static final String CONNECTION_STRING =
+            "jdbc:sqlite:\\Users\\david\\Desktop\\" + DB_NAME;
     //stores
     private final ArrayList<String> groceryList = new ArrayList<>();
 

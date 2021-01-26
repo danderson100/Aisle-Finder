@@ -56,17 +56,20 @@ public class Main {
             String user = scanner.nextLine();
             System.out.println("Password: ");
             String pass = scanner.nextLine();
-            UserProfile.validateLogin(user, pass);
-            if (!UserProfile.acceptPW()) {
-                System.out.println("Login failed. Try again.");
-                login = false;
-            } else {
-                login = true;
-            }
-        } while (!login);
-        while (!quitApp && UserProfile.acceptPW()) {
+            //UserProfile.validateLogin(user, pass);
+//            if (!UserProfile.acceptPW()) {
+//                System.out.println("Login failed. Try again.");
+//                //FIXME: update once db is working
+//                login = true;
+//            } else {
+//                login = true;
+//            }
+            login = true;
             welcomeMsg();
-        }
+        } while (!login);
+//        while (!quitApp && UserProfile.acceptPW()) {
+//            welcomeMsg();
+//        }
 
    }
 
