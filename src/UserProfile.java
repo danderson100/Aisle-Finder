@@ -6,7 +6,7 @@ public class UserProfile {
 
     public static final String DB_NAME = "grocerystoreinfo.db";
     public static final String CONNECTION_STRING =
-            "jdbc:sqlite:\\Users\\david\\Desktop\\" + DB_NAME;
+            "jdbc:sqlite:" + DB_NAME;
     private static boolean acceptPW;
 
     private String name;

@@ -30,7 +30,7 @@ public class List {
 //            + DB_NAME;
     //Mac path
     public static final String CONNECTION_STRING =
-            "jdbc:sqlite:\\Users\\david\\Desktop\\" + DB_NAME;
+            "jdbc:sqlite:" + DB_NAME;
     //stores
     private final ArrayList<String> groceryList = new ArrayList<>();
 
