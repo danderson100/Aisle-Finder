@@ -7,12 +7,14 @@ import java.util.Scanner;
  * AUTHOR: David Anderson
  * FILE: Main.java
  *
- * PURPOSE: This is the main class for the Aisle Finder program. Aisle Finder allows users to create an account,
- * log in, create a grocery list, and the program can automatically add aisle numbers to that grocery list (if aisles
- * are found). Users are able to update/remove/add to the list at any time. The program uses grocerystoreinfo.db to
- * store User login data (including hashed passwords) and data about grocery items and their aisle
- * numbers in associated stores. Right now there are only a few local stores from Tucson, AZ because
- * I couldn't determine how best to populate the database with accurate aisle data.
+ * PURPOSE: This is the main class for the Aisle Finder program. Aisle Finder allows
+ * users to create an account, log in, create a grocery list, and the program can
+ * automatically add aisle numbers to that grocery list (if aisles are found).
+ * Users are able to update/remove/add to the list at any time. The program uses
+ * grocerystoreinfo.db to store User login data (including hashed passwords) and
+ * data about grocery items and their aisle numbers in associated stores.
+ * Right now there are only a few local stores from Tucson, AZ because
+ * I haven't determined how best to populate the database with accurate aisle data.
  *
  * USAGE:
  * java Main
@@ -21,7 +23,7 @@ import java.util.Scanner;
  */
 
 public class Main {
-
+    //FIXME convert to local
     private static final Scanner scanner = new Scanner(System.in);
     //creates a dynamic list for storing items
     private static final List groceryList = new List();
