@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
@@ -7,8 +8,8 @@ import java.util.Scanner;
  * FILE: Main.java
  *
  * PURPOSE: This is the main class for the Aisle Finder program. Aisle Finder allows users to create an account,
- * log in, create a grocery list, and the program can automatically add aisle numbers to that grocery list.
- * Users are able to update/remove/add to the list at any time. The program uses grocerystoreinfo.db to
+ * log in, create a grocery list, and the program can automatically add aisle numbers to that grocery list (if aisles
+ * are found). Users are able to update/remove/add to the list at any time. The program uses grocerystoreinfo.db to
  * store User login data (including hashed passwords) and data about grocery items and their aisle
  * numbers in associated stores. Right now there are only a few local stores from Tucson, AZ because
  * I couldn't determine how best to populate the database with accurate aisle data.
@@ -33,21 +34,18 @@ public class Main {
         System.out.println("Welcome! Please select one: ");
         System.out.println("1. Login");
         System.out.println("2. Create Account");
-        int selection = scanner.nextInt();
+        int selection = -1;
+        try {
+            selection = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Error: " + e);
+            main(args);
+        }
+
         scanner.nextLine();
         //if user selects create account, we get details and send to UserProfile
         if (selection == 2) {
-            UserProfile userProfile = new UserProfile();
-            System.out.println("Please enter a username: ");
-            userProfile.setName(scanner.nextLine());
-            System.out.println("Enter a password: ");
-            userProfile.setPassword(scanner.nextLine());
-            System.out.println("Please enter an email: ");
-            userProfile.setEmail(scanner.nextLine());
-            userProfile.generateLogin
-                    (userProfile.getName(), userProfile.getPassword(), userProfile.getEmail());
-            userProfile.write();
-            System.out.println("Success! Now please log in: ");
+            createAccount();
         }
         boolean login;
         //created a do-while loop here so if login fails they can try again.
@@ -65,15 +63,34 @@ public class Main {
             }
         } while (!login);
         while (!quitApp && UserProfile.acceptPW()) {
-            System.out.println("Welcome to Aisle finder!");
-            Date date = new Date(); // This object contains the current date value
-            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-            System.out.println(formatter.format(date));
-            System.out.println("-------------------------------");
-            printListInstructions();
-            createListOption();
+            welcomeMsg();
         }
 
+   }
+
+   private static void createAccount() {
+       UserProfile userProfile = new UserProfile();
+       System.out.println("Please enter a username: ");
+       userProfile.setName(scanner.nextLine());
+       System.out.println("Enter a password: ");
+       userProfile.setPassword(scanner.nextLine());
+       System.out.println("Please enter an email: ");
+       userProfile.setEmail(scanner.nextLine());
+       userProfile.generateLogin
+               (userProfile.getName(), userProfile.getPassword(), userProfile.getEmail());
+       userProfile.write();
+       System.out.println("Success! Now please log in: ");
+   }
+
+   //small helper method to provide initial instructions
+   private static void welcomeMsg() {
+       System.out.println("Welcome to Aisle finder!");
+       Date date = new Date(); // This object contains the current date value
+       SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+       System.out.println(formatter.format(date));
+       System.out.println("-------------------------------");
+       printListInstructions();
+       createListOption();
    }
 
     /**

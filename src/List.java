@@ -1,6 +1,27 @@
 import java.sql.*;
 import java.util.ArrayList;
 
+/*
+ * AUTHOR: David Anderson
+ * FILE: List.java
+ *
+ * PURPOSE: This class stores all of the user's grocery list information. It allows users to
+ * update items, remove items, add, and print their existing list. The List class also has private
+ * methods to call information from the database, but the path will have to be changed to match
+ * the user's path to their grocerystoreinfo.db file.
+ *
+ * USAGE INSTRUCTIONS:
+ * List groceryList = new List();
+ *
+ * EXAMPLES:
+ * groceryList.addItem(item);
+ *
+ * groceryList.printGroceryList();
+ *
+ *
+ *
+ *
+ */
 public class List {
     //these are for SQL queries
     public static final String DB_NAME = "grocerystoreinfo.db";
@@ -125,6 +146,12 @@ public class List {
         System.out.println(capitalizeItemName + " has been removed from your shopping list.");
     }
 
+    /**
+     * Purpose: This is the user-facing method which finds the item's
+     * index and then calls another method to remove the item.
+     *
+     * @param name, is the name of the item to be removed.
+     */
     public void removeItem(String name) {
         int position = findItem(name);
         if (itemExists(name) && position >= 0) {
