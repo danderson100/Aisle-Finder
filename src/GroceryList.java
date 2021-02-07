@@ -1,17 +1,19 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /*
  * AUTHOR: David Anderson
- * FILE: List.java
+ * FILE: GroceryList.java
  *
  * PURPOSE: This class stores all of the user's grocery list information. It allows users to
- * update items, remove items, add, and print their existing list. The List class also has private
+ * update items, remove items, add, and print their existing list. The GroceryList class also has private
  * methods to call information from the database, but the path will have to be changed to match
  * the user's path to their grocerystoreinfo.db file.
  *
  * USAGE INSTRUCTIONS:
- * List groceryList = new List();
+ * GroceryList groceryList = new GroceryList();
  *
  * EXAMPLES:
  * groceryList.addItem(item);
@@ -22,17 +24,14 @@ import java.util.ArrayList;
  *
  *
  */
-public class List {
+public class GroceryList {
     //these are for SQL queries
     public static final String DB_NAME = "grocerystoreinfo.db";
-    //Linux machine path
-//    public static final String CONNECTION_STRING = "jdbc:sqlite:\\home\\dayvihd\\IdeaProjects\\Aisle-Finder\\"
-//            + DB_NAME;
-    //Mac path
+
     public static final String CONNECTION_STRING =
             "jdbc:sqlite:" + DB_NAME;
-    //stores
-    private final ArrayList<String> groceryList = new ArrayList<>();
+    //used LinkedList because there could be frequent insertion/removal
+    private final List<String> groceryList = new LinkedList<>();
 
     /**
      * Purpose: This functions similarly to a toString() method, printing

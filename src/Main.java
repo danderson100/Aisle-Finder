@@ -2,6 +2,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  * AUTHOR: David Anderson
@@ -26,10 +28,10 @@ public class Main {
     //FIXME convert to local
     private static final Scanner scanner = new Scanner(System.in);
     //creates a dynamic list for storing items
-    private static final List groceryList = new List();
+    private static final GroceryList groceryList = new GroceryList();
 
     private static boolean quitApp = false; //master command to exit app
-   // private static boolean acceptPW;
+    // private static boolean acceptPW;
 
     public static void main(String[] args) {
 
@@ -58,8 +60,9 @@ public class Main {
             String pass = scanner.nextLine();
             UserProfile.validateLogin(user, pass);
             if (!UserProfile.acceptPW()) {
-                System.out.println("Login failed. Try again.");
+                System.out.println("Login failed.");
                 login = false;
+                main(args);
             } else {
                 login = true;
             }
@@ -68,32 +71,83 @@ public class Main {
             welcomeMsg();
         }
 
-   }
+    }
 
-   private static void createAccount() {
-       UserProfile userProfile = new UserProfile();
-       System.out.println("Please enter a username: ");
-       userProfile.setName(scanner.nextLine());
-       System.out.println("Enter a password: ");
-       userProfile.setPassword(scanner.nextLine());
-       System.out.println("Please enter an email: ");
-       userProfile.setEmail(scanner.nextLine());
-       userProfile.generateLogin
-               (userProfile.getName(), userProfile.getPassword(), userProfile.getEmail());
-       userProfile.write();
-       System.out.println("Success! Now please log in: ");
-   }
+    private static void createAccount() {
+        UserProfile userProfile = new UserProfile();
+        System.out.println("Please enter a username: ");
+        userProfile.setName(scanner.nextLine());
+        boolean checkValidFormat = false;
+        while (!checkValidFormat) {
+            try {
+                while (true) {
+                    System.out.println("Enter a password. Your password must be: ");
+                    System.out.println("\tAt least SIX characters");
+                    System.out.println("\tAt least one uppercase letter");
+                    System.out.println("\tAt least one number");
+                    System.out.println("\tAt least one symbol(e.g. !@#$%)");
+                    String passwordAttempt = scanner.nextLine();
+                    checkValidFormat = checkPassFormat(passwordAttempt);
+                    if (checkValidFormat) {
+                        userProfile.setPassword(passwordAttempt);
+                        break;
+                    } else {
+                        System.out.println("Invalid password. Try again.");
+                    }
+                }
 
-   //small helper method to provide initial instructions
-   private static void welcomeMsg() {
-       System.out.println("Welcome to Aisle finder!");
-       Date date = new Date(); // This object contains the current date value
-       SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-       System.out.println(formatter.format(date));
-       System.out.println("-------------------------------");
-       printListInstructions();
-       createListOption();
-   }
+                while (true) {
+                    System.out.println("Please enter an email: ");
+                    String emailAttempt = scanner.nextLine();
+                    boolean checkEmailFormat = checkEmailFormat(emailAttempt);
+                    if (checkEmailFormat) {
+                        userProfile.setEmail(emailAttempt);
+                        break;
+                    } else {
+                        System.out.println("Invalid email. Try again.");
+                    }
+                }
+
+
+            } catch (InputMismatchException e) {
+                System.out.println("Error: " + e);
+            }
+
+
+        }
+
+        userProfile.generateLogin
+                (userProfile.getName(), userProfile.getPassword(), userProfile.getEmail());
+        userProfile.write();
+        System.out.println("Success! Now please log in: ");
+    }
+
+    private static boolean checkPassFormat(String attempt) {
+        String pattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!$%^&+=])(?=\\S+$).{6,}$";
+        return attempt.matches(pattern);
+    }
+
+    public static boolean checkEmailFormat(String emailStr) {
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(emailStr);
+        return matcher.find();
+    }
+
+//    private static boolean checkEmailFormat(String attempt) {
+//        String pattern = "^[\\w+]@[\\w+].[a-z]$";
+//        return attempt.matches(pattern);
+//    }
+
+    //small helper method to provide initial instructions
+    private static void welcomeMsg() {
+        System.out.println("Welcome to Aisle finder!");
+        Date date = new Date(); // This object contains the current date value
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        System.out.println(formatter.format(date));
+        System.out.println("-------------------------------");
+        printListInstructions();
+        createListOption();
+    }
 
     /**
      * Purpose: This helper method uses an enhanced switch statement
@@ -147,6 +201,7 @@ public class Main {
             default -> System.out.println("Oops! Couldn't find that store. Try again.");
         }
     }
+
     //this method is hidden from users but allows the developer
     //to add items to the database
     private static void addToDB() {
@@ -181,6 +236,7 @@ public class Main {
         System.out.println("\t 6 - To select your store & add aisle numbers to the list.");
         System.out.println("\t 7 - To quit the application.");
     }
+
     //allows users to add an item to the grocery list
     private static void addItems() {
         System.out.print("Please enter a grocery item: (Type Q if done adding)\n");
@@ -194,6 +250,7 @@ public class Main {
         }
 
     }
+
     //this let's user find an existing item in the list and update its name
     private static void modifyItem() {
         System.out.println("Enter the item's name you wish to update: ");
@@ -203,6 +260,7 @@ public class Main {
         groceryList.modifyGroceryItem(name, newItem);
         System.out.println("Item updated!");
     }
+
     //searches the grocery list and removes the selected item
     private static void removeItem() {
         System.out.println("Enter the item's name you wish to remove: ");
@@ -217,6 +275,7 @@ public class Main {
         }
 
     }
+
     //this allows users to check and see if they have already added an item
     private static void searchForItem() {
         System.out.println("Enter the name of the item you want to find: ");
