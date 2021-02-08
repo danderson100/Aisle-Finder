@@ -112,8 +112,7 @@ public class Main {
             } catch (InputMismatchException e) {
                 System.out.println("Error: " + e);
             }
-
-
+            
         }
 
         userProfile.generateLogin
@@ -132,11 +131,6 @@ public class Main {
         Matcher matcher = pattern.matcher(emailStr);
         return matcher.find();
     }
-
-//    private static boolean checkEmailFormat(String attempt) {
-//        String pattern = "^[\\w+]@[\\w+].[a-z]$";
-//        return attempt.matches(pattern);
-//    }
 
     //small helper method to provide initial instructions
     private static void welcomeMsg() {
